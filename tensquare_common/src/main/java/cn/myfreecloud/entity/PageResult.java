@@ -4,7 +4,9 @@ import java.util.List;
 
 public class PageResult<T> {
 
+    // 总条数
     private Long total;
+    // 内容
     private List<T> rows;
 
     public PageResult() {
