@@ -1,4 +1,4 @@
-package cn.myfreecloud.entity;
+package entity;
 
 /**
  * 封装返回的json数据

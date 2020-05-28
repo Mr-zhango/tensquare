@@ -1,4 +1,4 @@
-package cn.myfreecloud.entity;
+package entity;
 
 public class StatusCode {
 

@@ -1,4 +1,4 @@
-package cn.myfreecloud.entity;
+package entity;
 
 import java.util.List;
 
