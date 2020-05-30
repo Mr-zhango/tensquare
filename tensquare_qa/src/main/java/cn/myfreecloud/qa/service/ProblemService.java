@@ -175,4 +175,12 @@ public class ProblemService {
         Page<Problem> pageData = problemDao.hotlist(labelId, pageRequest);
         return pageData;
     }
+
+    public Page<Problem> waitlist(String labelId, Integer page, Integer size) {
+        PageRequest pageRequest = PageRequest.of(page - 1, size);
+        Page<Problem> pageData = problemDao.waitlist(labelId, pageRequest);
+
+        return pageData;
+
+    }
 }

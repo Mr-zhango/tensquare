@@ -26,6 +26,28 @@ public class ProblemController {
 
     //GET /problem/hotlist/{label}/{page}/{size} 热门问答列表
 
+
+    /**
+     * 查询等待回答列表
+     *
+     * @param labelId
+     * @param page
+     * @param size
+     * @return
+     */
+    @RequestMapping(value = "waitlist/{labelId}/{page}/{size}", method = RequestMethod.GET)
+    public Result waitlist(@PathVariable String labelId,
+                           @PathVariable Integer page,
+                           @PathVariable Integer size) {
+        Page<Problem> pageData = problemService.waitlist(labelId, page, size);
+        PageResult<Problem> pageResult = new PageResult<>(pageData.getTotalElements(),
+                pageData.getContent());
+
+        return new Result(true, StatusCode.OK, "查询成功", pageResult);
+
+    }
+
+
     /**
      * 分页查询热门回答列表
      * @param labelId
