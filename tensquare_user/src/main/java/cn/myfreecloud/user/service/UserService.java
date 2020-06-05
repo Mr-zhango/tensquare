@@ -191,7 +191,7 @@ public class UserService {
         System.out.println(mobile + ":" + code);
 
         //2. 把验证码保存到redis中,后期对比验证码使用的,设置有效时间5分钟
-        redisTemplate.opsForValue().set("sms_" + mobile, code, 5, TimeUnit.MINUTES);
+        redisTemplate.opsForValue().set("sms_" + mobile, code, 5L, TimeUnit.MINUTES);
 
         //3. 把手机号和验证码通过RabbitMQ发送出去
         Map<String, Object> map = new HashMap<>();
@@ -223,7 +223,7 @@ public class UserService {
         user.setRegdate(new Date());
         user.setUpdatedate(new Date());
         user.setLastdate(new Date());
-        user.setOnline(0l);
+        user.setOnline(0L);
         user.setFanscount(0);
         user.setFollowcount(0);
 
