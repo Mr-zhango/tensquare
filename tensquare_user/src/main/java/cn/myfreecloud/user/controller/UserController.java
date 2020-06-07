@@ -5,10 +5,14 @@ import cn.myfreecloud.user.service.UserService;
 import entity.PageResult;
 import entity.Result;
 import entity.StatusCode;
+import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
+import util.JwtUtil;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -24,6 +28,14 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    //直接注入当前的请求request,这种写法的作用和直接在Controller方法声明request效果一样
+    //好处是把request变成Controller全局的,只声明一次即可
+    @Autowired
+    private HttpServletRequest request;
+
+    @Autowired
+    private JwtUtil jwtUtil;
+
     //POST /user/login 登陆
 
     /**
@@ -34,10 +46,17 @@ public class UserController {
      */
     @RequestMapping(value = "login", method = RequestMethod.POST)
     public Result login(@RequestBody User user) {
-        User userLogin = userService.login(user.getMobile(),user.getPassword());
+        User userLogin = userService.login(user.getMobile(), user.getPassword());
 
         if (userLogin != null) {
-            return new Result(true, StatusCode.OK, "登录成功");
+            //登录成功,签发token
+            String token = jwtUtil.createJWT(userLogin.getId(), userLogin.getMobile(), "user");
+
+            Map map = new HashMap();
+            map.put("mobile", userLogin.getMobile());
+            map.put("token", token);
+
+            return new Result(true, StatusCode.OK, "登录成功", map);
         } else {
             return new Result(true, StatusCode.LOGINERROR, "登录失败");
         }
@@ -149,12 +168,54 @@ public class UserController {
     }
 
     /**
-     * 删除
+     * 删除,删除用户必须是管理员
      *
      * @param id
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public Result delete(@PathVariable String id) {
+        ////获取token,从请求头获取
+        //String header = request.getHeader("Authorization");
+        //
+        ////判断token是否为空
+        //if (header == null) {
+        //    //如果为空,表示没有登录
+        //    return new Result(false, StatusCode.LOGINERROR, "没有登录");
+        //}
+        //
+        ////判断token是否是Bearer 开头
+        //if(!header.startsWith("Bearer ")) {
+        //    //如果不是Bearer开头,表示token数据不正确,登录有问题
+        //    return new Result(false, StatusCode.LOGINERROR, "登录错误,需要重新登录");
+        //}
+        //
+        //try {
+        //    //获取token的值,Bearer 需要去掉
+        //    String token = header.substring(7);
+        //    //根据token,获取claims,可以验证token的正确性,同时可以获取到权限是什么
+        //    Claims claims = jwtUtil.parseJWT(token);
+        //    if (claims == null) {
+        //        return new Result(false, StatusCode.ACCESSERROR, "权限不足");
+        //    }
+        //
+        //    if(!"admin".equals(claims.get("roles"))) {
+        //        //如果获取到的权限不是admin,就不是管理员
+        //        //返回没有权限操作
+        //        return new Result(false, StatusCode.ACCESSERROR, "权限不足");
+        //    }
+        //} catch (Exception e) {
+        //    e.printStackTrace();
+        //    return new Result(false, StatusCode.ACCESSERROR, "权限异常");
+        //}
+
+        //从request中获取Claims,判断是否是管理员.通过roles_admin名字拿到的数据,就是管理员
+        Claims claims = (Claims) request.getAttribute("roles_admin");
+        if (claims == null) {
+            //如果不是管理员,就没有权限
+            return new Result(false, StatusCode.ACCESSERROR, "权限不足");
+        }
+
+        //如果是管理员,就可以删除用户
         userService.deleteById(id);
         return new Result(true, StatusCode.OK, "删除成功");
     }

@@ -5,10 +5,12 @@ import cn.myfreecloud.qa.service.ProblemService;
 import entity.PageResult;
 import entity.Result;
 import entity.StatusCode;
+import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 /**
@@ -24,8 +26,10 @@ public class ProblemController {
     @Autowired
     private ProblemService problemService;
 
-    //GET /problem/hotlist/{label}/{page}/{size} 热门问答列表
+    @Autowired
+    private HttpServletRequest request;
 
+    //GET /problem/waitlist/{label}/{page}/{size} 等待回答列表
 
     /**
      * 查询等待回答列表
@@ -47,9 +51,11 @@ public class ProblemController {
 
     }
 
+    //GET /problem/hotlist/{label}/{page}/{size} 热门问答列表
 
     /**
      * 分页查询热门回答列表
+     *
      * @param labelId
      * @param page
      * @param size
@@ -59,6 +65,7 @@ public class ProblemController {
     public Result hotlist(@PathVariable String labelId,
                           @PathVariable Integer page,
                           @PathVariable Integer size) {
+
         Page<Problem> pageData = problemService.hotlist(labelId, page, size);
 
         PageResult<Problem> pageResult = new PageResult<>(pageData.getTotalElements(),
@@ -83,7 +90,8 @@ public class ProblemController {
                           @PathVariable Integer size) {
         Page<Problem> pageData = problemService.newlist(labelId, page, size);
 
-        PageResult<Problem> pageResult = new PageResult<>(pageData.getTotalElements(),pageData.getContent());
+        PageResult<Problem> pageResult = new PageResult<>(pageData.getTotalElements(),
+                pageData.getContent());
 
         return new Result(true, StatusCode.OK, "查询成功", pageResult);
     }
@@ -138,12 +146,23 @@ public class ProblemController {
     }
 
     /**
-     * 增加
+     * 增加,发布问题之前,需要验证用户是user权限
      *
      * @param problem
      */
     @RequestMapping(method = RequestMethod.POST)
     public Result add(@RequestBody Problem problem) {
+        //从request中获取Claims
+        Claims claims = (Claims) request.getAttribute("roles_user");
+
+        //如果获取到了Claims,表示就是用户权限,如果为空,没有获取到,表示用户没有权限
+        if (claims == null) {
+            //如果为空,表示没有权限
+            return new Result(true, StatusCode.ACCESSERROR, "没有权限");
+        }
+
+        //把用户id设置到问答中
+        problem.setUserid(claims.getId());
         problemService.add(problem);
         return new Result(true, StatusCode.OK, "增加成功");
     }

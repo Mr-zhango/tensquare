@@ -4,6 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import util.IdWorker;
+import util.JwtUtil;
 
 @SpringBootApplication
 public class QaApplication {
@@ -16,5 +17,9 @@ public class QaApplication {
 	public IdWorker idWorkker(){
 		return new IdWorker(1, 1);
 	}
-	
+
+	@Bean
+	public JwtUtil createJwtUtil(){
+		return new JwtUtil();
+	}
 }

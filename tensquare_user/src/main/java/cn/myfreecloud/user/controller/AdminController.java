@@ -8,7 +8,9 @@ import entity.StatusCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
+import util.JwtUtil;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -23,6 +25,9 @@ public class AdminController {
 
     @Autowired
     private AdminService adminService;
+
+    @Autowired
+    private JwtUtil jwtUtil;
 
     //POST /admin/login 登陆
 
@@ -42,8 +47,21 @@ public class AdminController {
             //如果结果为空, 表示管理员未登录
             return new Result(true, StatusCode.LOGINERROR, "登录失败");
         } else {
+            //生成jwt的token
+            //第一个参数是id,使用管理员的id
+            //第二个参数是jwt所面向的用户,使用管理员的登录名
+            //第三个参数是自定义的信息,权限信息,现在是管理员,权限是admin
+            String token = jwtUtil.createJWT(adminLogin.getId(),adminLogin.getLoginname(), "admin");
+
+            //为了测试方便,把token信息打印到控制台
+            Map map = new HashMap();
+            map.put("name", adminLogin.getLoginname());
+            map.put("token", token);
+
+            System.out.println(map.toString());
+
             //如果结果不为空表示管理员已登录
-            return new Result(true, StatusCode.OK, "登录成功");
+            return new Result(true, StatusCode.OK, "登录成功", map);
         }
 
     }
