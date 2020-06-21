@@ -1,6 +1,6 @@
 package cn.myfreecloud.sms;
 
-import com.tensquare.sms.util.SmsUtil;
+import cn.myfreecloud.sms.util.SmsUtil;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;

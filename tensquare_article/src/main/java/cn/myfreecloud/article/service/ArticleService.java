@@ -104,7 +104,7 @@ public class ArticleService {
 
         try {
             // 设置一天的有效时间
-            redisTemplate.opsForValue().set("article_" + id, articleDb,1, TimeUnit.DAYS);
+            redisTemplate.opsForValue().set("article_" + id, articleDb,1L, TimeUnit.DAYS);
         } catch (Exception e) {
             e.printStackTrace();
         }
