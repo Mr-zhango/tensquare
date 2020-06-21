@@ -4,6 +4,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import util.IdWorker;
+
+/**
+ * 活动微服务
+ */
 @SpringBootApplication
 @EnableCaching
 public class GatheringApplication {
