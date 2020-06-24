@@ -13,6 +13,7 @@
 
 
     <dependencies>
+        <!--引入jwt鉴权-->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt</artifactId>

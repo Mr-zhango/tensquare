@@ -10,6 +10,9 @@ import util.JwtUtil;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * 权限处理拦截器
+ */
 @Component
 public class JwtIntercept implements HandlerInterceptor {
 
