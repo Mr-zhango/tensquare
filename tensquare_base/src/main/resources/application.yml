@@ -12,3 +12,10 @@ spring:
     database: mysql
     show-sql: true
     # generate-ddl: true 自动生产表结构
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:6868/eureka/
+  instance:
+    prefer-ip-address: true #是否要spring自动发现Eureka的客户端,简单的说,就是是否自动获取微服务的ip地址

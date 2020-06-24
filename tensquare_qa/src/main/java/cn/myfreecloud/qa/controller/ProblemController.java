@@ -1,7 +1,9 @@
 package cn.myfreecloud.qa.controller;
 
+import cn.myfreecloud.qa.client.LabelClient;
 import cn.myfreecloud.qa.pojo.Problem;
 import cn.myfreecloud.qa.service.ProblemService;
+import com.netflix.discovery.converters.Auto;
 import entity.PageResult;
 import entity.Result;
 import entity.StatusCode;
@@ -31,6 +33,14 @@ public class ProblemController {
 
     //GET /problem/waitlist/{label}/{page}/{size} 等待回答列表
 
+    @Autowired
+    private LabelClient labelClient;
+
+    @RequestMapping(value = "lable/{id}",method = RequestMethod.GET)
+    public Result findLableById(@PathVariable("id") String id){
+        Result result = labelClient.findById(id);
+        return result;
+    }
     /**
      * 查询等待回答列表
      *
