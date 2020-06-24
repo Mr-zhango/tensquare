@@ -6,17 +6,29 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class Spit implements Serializable {
+
+    // 必须有,是文档的唯一标识符
     @Id
     private String _id;
+    // 内容
     private String content;
+    // 发布时间
     private Date publishtime;
+    // 用户id
     private String userid;
+    // 昵称
     private String nickname;
+    // 访问量
     private Integer visits;
+    // 点赞
     private Integer thumbup;
+    // 分享
     private Integer share;
+    // 评论
     private Integer comment;
+    // 状态
     private String state;
+    // 上级id
     private String parentid;
 
     public String get_id() {

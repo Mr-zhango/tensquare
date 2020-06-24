@@ -7,6 +7,7 @@ import util.IdWorker;
 
 /**
  * 活动微服务
+ * @EnableCaching 开启缓存功能
  */
 @SpringBootApplication
 @EnableCaching

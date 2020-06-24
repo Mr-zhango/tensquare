@@ -209,7 +209,7 @@ public class UserService {
         //判断redis中获取的验证码是否为空
         if (sysCode == null) {
             //如果验证码为空,表示用就没有获取过验证码
-            throw new RuntimeException("请点击获取验证码按钮");
+            throw new RuntimeException("请点击获取验证码按钮获取验证码");
         }
 
         //判断redis中的验证码和传递过来的验证码是否一致
