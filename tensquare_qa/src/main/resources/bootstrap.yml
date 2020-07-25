@@ -1,0 +1,9 @@
+spring:
+  cloud:
+    config:
+      name: qa  #配置文件的-的前半部分
+      profile: dev #配置文件-的后半部分
+      label: master #使用的git服务器的分支名称
+      uri: http://127.0.0.1:12000 #配置中心微服务的访问地址
+  rabbitmq:
+    host: 192.168.1.129

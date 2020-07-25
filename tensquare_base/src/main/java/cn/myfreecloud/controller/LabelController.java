@@ -1,15 +1,16 @@
 package cn.myfreecloud.controller;
 
 
+import cn.myfreecloud.pojo.Label;
+import cn.myfreecloud.service.LabelService;
 import entity.PageResult;
 import entity.Result;
 import entity.StatusCode;
-import cn.myfreecloud.pojo.Label;
-import cn.myfreecloud.service.LabelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -20,6 +21,9 @@ public class LabelController {
 
     @Autowired
     private LabelService labelService;
+
+    @Autowired
+    private HttpServletRequest request;
 
     //POST /label/search/{page}/{size} 标签分页
     @RequestMapping(value = "search/{page}/{size}", method = RequestMethod.POST)
@@ -56,7 +60,11 @@ public class LabelController {
     public Result findById(@PathVariable String id) {
         Label label = labelService.findById(id);
 
-        return new Result(true, StatusCode.OK, "查询成功", label);
+        String header = request.getHeader("Authorization");
+
+        System.out.println(header);
+
+        return new Result(true, StatusCode.OK, "查询成功222", label);
     }
 
 

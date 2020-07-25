@@ -247,6 +247,14 @@ public class UserService {
 
     }
 
+    public void incFollow(Integer x, String userid) {
+        userDao.incFollow(x,userid);
+    }
+
+    public void incFans(Integer x, String userid) {
+        userDao.incFans(x,userid);
+    }
+
     //public static void main(String[] args) {
     //	Random random = new Random();
     //	for (int i = 0; i < 100; i++) {

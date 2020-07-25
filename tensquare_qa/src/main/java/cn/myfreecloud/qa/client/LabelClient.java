@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 // 声明微服务的调用 @FeignClient 声明使用feign去调用那个微服务
-@FeignClient("tensquare-base")
+@FeignClient(value = "tensquare-base",fallback = LabelClientImpl.class)
 public interface LabelClient {
 
     //value是完整的调用地址

@@ -1,0 +1,26 @@
+server:
+  port: 9011
+spring:
+  application:
+    name: tensquare-manager
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:6868/eureka/
+  instance:
+    prefer-ip-address: true
+zuul:
+  routes:
+    tensquare-qa: #问答
+      path: /problem/** #配置请求URL的请求规则
+      serviceId: tensquare-qa #指定Eureka注册中心中的服务id
+    tensquare‐base: #基础
+      path: /label/** #配置请求URL的请求规则
+      serviceId: tensquare‐base #指定Eureka注册中心中的服务id
+    tensquare‐user: #用户
+      path: /user/** #配置请求URL的请求规则
+      serviceId: tensquare‐user #指定Eureka注册中心中的服务id
+jwt:
+  config:
+    key: itcast
+    ttl: 3600000

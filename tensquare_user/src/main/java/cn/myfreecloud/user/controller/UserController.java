@@ -36,6 +36,20 @@ public class UserController {
     @Autowired
     private JwtUtil jwtUtil;
 
+
+    //修改关注数
+    @RequestMapping(value = "incFollow/{userid}/{x}", method = RequestMethod.POST)
+    public void incFollow(@PathVariable String userid, @PathVariable Integer x) {
+        userService.incFollow(x, userid);
+    }
+
+
+    //修改粉丝数
+    @RequestMapping(value = "incFans/{userid}/{x}", method = RequestMethod.POST)
+    public void incFans(@PathVariable String userid, @PathVariable Integer x) {
+        userService.incFans(x, userid);
+    }
+
     //POST /user/login 登陆
 
     /**
